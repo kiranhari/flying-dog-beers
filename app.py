@@ -19,7 +19,23 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 server = app.server
 
+nbytes = 4096
+hostname = 'RSCTBDEV1.fyre.ibm.com'
+port = 22
+username = 'root'
+password = 'Mstbsep20!8'
+#remotefile="/tmp/MonitoringDailyReport/OutputAppend"+time.strftime('%Y%m%d')+".xls"
+#file="OutputAppend"+time.strftime('%Y%m%d')+".xls"
 
+
+ssh = paramiko.SSHClient()
+ssh.load_system_host_keys()
+ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+ssh.connect(hostname, username="root", password="Mstbsep20!8")
+print("Connected")
+scp = SCPClient(ssh.get_transport())
+scp.get('/tmp/MonitoringDailyReport/OutputAppend20190213.xls')
+scp.close()
 
 wb = open_workbook('OutputAppend20190213.xls')
 createOrder=[]
